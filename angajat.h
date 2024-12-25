@@ -14,6 +14,7 @@ class Angajat
             {
                 if(cnp.size() != 13) 
                 {
+                    cout<<"nu merge cnp";
                     throw std::invalid_argument("cnp gresit, trebuie sa fie un sir de 13 caractere");
                 }
                 int an= stoi(cnp.substr(1,2));
@@ -23,7 +24,8 @@ class Angajat
                 tm* acum=localtime(&k);
                 if(((acum->tm_year+1900)-(2000+an))<18 )
                 {
-                    throw std::invalid_argument("varsta minima pentru angajare 18 ani");
+                    cout<<"nu e buna varssta";
+                    //throw std::invalid_argument("varsta minima pentru angajare 18 ani");
                 }
                 else if (((acum->tm_year+1900)-(2000+an))==18 and (acum->tm_mon+1<luna))
                 {
@@ -31,6 +33,7 @@ class Angajat
                 }
                 else if (((acum->tm_year+1900)-(2000+an))==18 and (acum->tm_mon+1==luna) and (acum->tm_mday<zi))
                 {
+                    
                     throw std::invalid_argument("varsta minima pentru angajare 18 ani si zi");
                 }
                 if(nume.size()<3 or nume.size()>30)
@@ -51,7 +54,7 @@ class Angajat
                     an_vechime--;
                 } 
             };
-            virtual void afisare () 
+            virtual void afisare () const
             {
                 cout<<"id="<<id<<endl<<"an vechime="<<an_vechime<<endl;
                 cout<<"nume="<<nume<<" prenume= "<<prenume<<endl;
@@ -59,9 +62,18 @@ class Angajat
                 cout<<"an angajare="<<data_angajarii.tm_year+1900<<" luna angajare = "<< data_angajarii.tm_mon+1<<" zi angajare= "<<data_angajarii.tm_mday<<endl;
                 cout<<salariu()<<endl;
             }
-            virtual double salariu()
+            virtual double salariu() const
             {
                 return salariu_baza + an_vechime * 100;
             }
+            virtual void schimbaNume(string numee)
+            {
+                if(numee.size() < 3 or numee.size() > 30)
+                {
+                    throw std::invalid_argument("numele nu se incadreaza in standarde");
+                }
+                nume=numee;
+            }
             virtual ~Angajat(){};
+            
 };
